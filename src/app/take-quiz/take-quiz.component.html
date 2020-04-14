@@ -1,0 +1,7 @@
+<h3>{{quiz.content}}</h3>
+<hr class="my-5" />
+<div *ngFor="let question of quiz.questions">
+  {{question.content}}
+  <br />
+  <ul *ngFor="let answer of question.answers">{{answer.content}} - {{answer.isCorrect}}</ul>
+</div>
