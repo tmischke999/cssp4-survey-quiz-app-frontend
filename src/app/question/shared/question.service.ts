@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QuestionApiResponse, Question } from './question.model';
+import { Question } from './question.model';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http'
 
@@ -14,9 +14,9 @@ export class QuestionService {
   constructor(private http: HttpClient) { }
 
   getQuestions(): Observable<Question[]> {
-    this.http.get<QuestionApiResponse>(this.API + "questions").subscribe(
+    this.http.get<Question[]>(this.API + "questions").subscribe(
       resp => {
-        this.questions.next(resp.questions);
+        this.questions.next(resp);
       },
       error => {
         console.log(error.statusText, error.status, error.message);
@@ -29,4 +29,5 @@ export class QuestionService {
     console.log("Attempting to add to database");
     return this.http.post<Question>(this.API + "addQuestion", question);
   }
+  
 }

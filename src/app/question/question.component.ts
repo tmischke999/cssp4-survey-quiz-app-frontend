@@ -4,6 +4,8 @@ import { Answer } from "./shared/answer.model";
 import { QuestionService } from "./shared/question.service";
 import { FormBuilder, FormGroup, FormArray, FormControl } from "@angular/forms";
 import { Observable } from "rxjs";
+import { Quiz } from "../quiz/shared/quiz.model";
+import { QuizService } from "../quiz/shared/quiz.service";
 
 @Component({
   selector: "app-question",
@@ -14,14 +16,18 @@ export class QuestionComponent implements OnInit {
   question: Question = new Question();
   questions: Question[];
   questionForm: FormGroup;
+  quiz: Quiz;
+  questionQuizzes: Quiz[];
 
   constructor(
     private fb: FormBuilder,
-    private questionService: QuestionService // <-- Need to fix url in question service before continuing
+    private questionService: QuestionService,
+    private quizService: QuizService
   ) {
     this.questionForm = this.fb.group({
       content: "",
-      answers: this.fb.array([])
+      answers: this.fb.array([]),
+      quizzes: this.fb.array([])
     });
   }
 
@@ -31,6 +37,10 @@ export class QuestionComponent implements OnInit {
 
   get content() {
     return this.questionForm.get("content");
+  }
+
+  get quizzes(): FormArray {
+    return this.questionForm.get("quizzes") as FormArray;
   }
 
   newAnswer(): FormGroup {
@@ -49,6 +59,8 @@ export class QuestionComponent implements OnInit {
     console.log(this.question.content);
     this.question.answers = this.questionForm.value.answers;
     console.log(this.question.answers);
+    this.question.quizzes = this.questionForm.value.quizzes;
+    console.log(this.question.quizzes);
 
     this.questionService.addQuestion(this.question).subscribe(response => {
       console.log("Question submitted! " + response);
@@ -63,5 +75,13 @@ export class QuestionComponent implements OnInit {
     this.questionService
       .getQuestions()
       .subscribe(questions => (this.questions = questions));
+    this.quiz = this.quizService.getCurrentQuiz();
+    this.quizzes.push(
+      this.fb.group({
+        id: this.quiz.id,
+        content: this.quiz.content,
+        questions: this.quiz.questions
+      })
+    );
   }
 }
