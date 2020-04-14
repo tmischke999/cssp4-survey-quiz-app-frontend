@@ -3,24 +3,13 @@
     {
       "id": "1",
       "content": "Test question?",
-      "seqNo": 1,
-      "quiz_id": 1,
       "answers": [
         {
           "id": 1,
           "content": "Answer 1",
-          "seqNo": 1,
           "isCorrect": true
         }
       ]
-    },
-    {
-      "content": "What's up?",
-      "id": "17pBj8p"
-    },
-    {
-      "content": "What's up?2",
-      "id": "OlCXZ7_"
     }
   ]
 }
