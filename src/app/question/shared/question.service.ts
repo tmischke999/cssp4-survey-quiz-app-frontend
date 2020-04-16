@@ -27,7 +27,11 @@ export class QuestionService {
 
   addQuestion(question: Question): Observable<Question> {
     console.log("Attempting to add to database");
-    return this.http.post<Question>(this.API + "addQuestion", question);
+    const tempQ: Question = question;
+    tempQ.quizzes.forEach(q => {
+      q.questions = [];
+    });
+    return this.http.post<Question>(this.API + "addQuestion", tempQ);
   }
-  
+
 }
