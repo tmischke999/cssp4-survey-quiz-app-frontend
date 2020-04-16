@@ -9,6 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomePageComponent } from './home-page/home-page.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { TakeQuizComponent } from './take-quiz/take-quiz.component';
+import { QuizSubmissionComponent } from './quiz-submission/quiz-submission.component';
+import { QuestionSubmissionComponent } from './question-submission/question-submission.component';
+import { AnswerSubmissionComponent } from './answer-submission/answer-submission.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { TakeQuizComponent } from './take-quiz/take-quiz.component';
     QuestionComponent,
     HomePageComponent,
     QuizComponent,
-    TakeQuizComponent
+    TakeQuizComponent,
+    QuizSubmissionComponent,
+    QuestionSubmissionComponent,
+    AnswerSubmissionComponent
   ],
   imports: [
     BrowserModule,
