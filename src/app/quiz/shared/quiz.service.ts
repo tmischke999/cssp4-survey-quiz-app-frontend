@@ -27,9 +27,9 @@ export class QuizService {
     return this.quizzes;
   }
 
-  addQuiz(question: Quiz): Observable<Quiz> {
+  addQuiz(quiz: Quiz): Observable<Quiz> {
     console.log("Attempting to add to database");
-    return this.http.post<Quiz>(this.API + "addQuiz", question);
+    return this.http.post<Quiz>(this.API + "addQuiz", quiz);
   }
 
   getQuiz(quiz: Quiz): Observable<Quiz> {

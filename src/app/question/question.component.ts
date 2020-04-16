@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Question } from "./shared/question.model";
-import { Answer } from "./shared/answer.model";
 import { QuestionService } from "./shared/question.service";
 import { FormBuilder, FormGroup, FormArray, FormControl } from "@angular/forms";
-import { Observable } from "rxjs";
 import { Quiz } from "../quiz/shared/quiz.model";
 import { QuizService } from "../quiz/shared/quiz.service";
 
