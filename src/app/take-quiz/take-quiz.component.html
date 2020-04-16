@@ -1,6 +1,6 @@
 <h3>{{quiz.content}}</h3>
 <hr class="my-5" />
-<form>
+<form [formGroup]="quizSubmissionForm" (ngSubmit)="submitQuizSubmission()">
   <div *ngFor="let question of quiz.questions">
 
     <span class="font-weight-bold">{{question.content}}</span>
