@@ -18,7 +18,7 @@ import { Answer } from "../question/shared/answer.model";
 export class TakeQuizComponent implements OnInit {
   quizzes: Quiz[];
   quiz: Quiz;
-  questions: Question[];
+  // questions: Question[];
   // questionSubmissions: QuestionSubmission[];
   quizSubmissionForm: FormGroup;
   quizSubmission: QuizSubmission;
@@ -33,24 +33,50 @@ export class TakeQuizComponent implements OnInit {
       this.quizService.getCurrentQuiz()
     );
 
-    this.quizSubmissionForm = this.fb.group({
-      questionSubmissions: this.fb.array(
-        [
-          this.fb.group({
-            content: "",
-            answers: this.fb.array(this.quizSubmission.questionSubmissions.map(q => q.answers)),
-          }),
-        ]
-      ),
+    console.log("******** the plan is to loop like this:");
+    console.log("For quiz: " + this.quizSubmission.content);
+
+    this.quizSubmission.questionSubmissions.forEach((question) => {
+      console.log(question.content);
+      question.answers.forEach((answer) => {
+        console.log(`\t${answer.content}`);
+      });
     });
+
+    console.log("@@@@@ end of plan debuggin output");
+
+    this.quizSubmissionForm = this.fb.group({
+      content: this.quizSubmission.content,
+      questions: this.fb.array([]),
+    });
+
+    this.quizSubmission.questionSubmissions.forEach((question) => {
+      console.log("Expected question content: " + question.content)
+      this.questions.push(this.fb.group({ content: question.content }));
+    });
+
+    /* ------------------------------------------------------
+
+    this.quizSubmissionForm = this.fb.group({
+      questionSubmissions: this.fb.array([
+        this.fb.group({
+          content: "",
+          answers: this.fb.array(
+            this.quizSubmission.questionSubmissions.map((q) => q.answers)
+          ),
+        }),
+      ]),
+    });
+    
+    --------------------------------------------------------*/
   }
 
   get answers(): FormArray {
     return this.quizSubmissionForm.get("answers") as FormArray;
   }
 
-  get questionSubmissions(): FormArray {
-    return this.quizSubmissionForm.get("questionSubmissions") as FormArray;
+  get questions(): FormArray {
+    return this.quizSubmissionForm.get("questions") as FormArray;
   }
 
   convertQuizToQuizSubmission(quiz: Quiz): QuizSubmission {
@@ -98,9 +124,9 @@ export class TakeQuizComponent implements OnInit {
     this.quizService
       .getQuizzes()
       .subscribe((quizzes) => (this.quizzes = quizzes));
-    this.questionService
-      .getQuestions()
-      .subscribe((questions) => (this.questions = questions));
+    // this.questionService
+    //   .getQuestions()
+    //   .subscribe((questions) => (this.questions = questions));
     this.quiz = this.quizService.getCurrentQuiz();
   }
 }

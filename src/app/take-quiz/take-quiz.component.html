@@ -1,19 +1,20 @@
 <h3>{{quiz.content}}</h3>
 <hr class="my-5" />
 <form [formGroup]="quizSubmissionForm" (ngSubmit)="submitQuizSubmission()">
-  <div formArrayName="questionSubmissions">
-    <div *ngFor="let question of questionSubmissions.controls; let i = index">
+  <div formArrayName="questions">
+    <div *ngFor="let question of questions.controls; let i = index">
 
       <span class="font-weight-bold">{{question.content}}</span>
       <br />
-      <ul formArrayName="answers" class="list-unstyled">
+      {{i}}
+      <!-- <ul formArrayName="answers" class="list-unstyled">
         <li *ngFor="let answer of answers.controls; let i = index">
           <div [formGroupName]="i">
             <input type="checkbox" id="{{answer.content}}" formControlName="isSelected" class="mr-2" />
             <label for="{{answer.content}}">{{answer.content}}</label>
           </div>
         </li>
-      </ul>
+      </ul> -->
 
     </div>
   </div>
