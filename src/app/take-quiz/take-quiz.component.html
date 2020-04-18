@@ -1,17 +1,21 @@
 <h3>{{quiz.content}}</h3>
 <hr class="my-5" />
 <form [formGroup]="quizSubmissionForm" (ngSubmit)="submitQuizSubmission()">
-  <div *ngFor="let question of quiz.questions">
+  <div formArrayName="questionSubmissions">
+    <div *ngFor="let question of questionSubmissions.controls; let i = index">
 
-    <span class="font-weight-bold">{{question.content}}</span>
-    <br />
-    <ul class="list-unstyled">
-      <li *ngFor="let answer of question.answers">
-        <input type="checkbox" id="{{answer.content}}" class="mr-2" />
-        <label for="{{answer.content}}">{{answer.content}}</label>
-      </li>
-    </ul>
+      <span class="font-weight-bold">{{question.content}}</span>
+      <br />
+      <ul formArrayName="answers" class="list-unstyled">
+        <li *ngFor="let answer of answers.controls; let i = index">
+          <div [formGroupName]="i">
+            <input type="checkbox" id="{{answer.content}}" formControlName="isSelected" class="mr-2" />
+            <label for="{{answer.content}}">{{answer.content}}</label>
+          </div>
+        </li>
+      </ul>
 
+    </div>
   </div>
   <button type="submit" class="btn btn-primary float-right">Submit Quiz</button>
 </form>

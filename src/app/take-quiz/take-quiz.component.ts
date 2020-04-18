@@ -19,7 +19,7 @@ export class TakeQuizComponent implements OnInit {
   quizzes: Quiz[];
   quiz: Quiz;
   questions: Question[];
-  questionSubmissions: QuestionSubmission[];
+  // questionSubmissions: QuestionSubmission[];
   quizSubmissionForm: FormGroup;
   quizSubmission: QuizSubmission;
 
@@ -35,15 +35,22 @@ export class TakeQuizComponent implements OnInit {
 
     this.quizSubmissionForm = this.fb.group({
       questionSubmissions: this.fb.array(
-        // this.quizService.getCurrentQuiz().questions
         [
           this.fb.group({
             content: "",
-            answers: [],
+            answers: this.fb.array(this.quizSubmission.questionSubmissions.map(q => q.answers)),
           }),
         ]
       ),
     });
+  }
+
+  get answers(): FormArray {
+    return this.quizSubmissionForm.get("answers") as FormArray;
+  }
+
+  get questionSubmissions(): FormArray {
+    return this.quizSubmissionForm.get("questionSubmissions") as FormArray;
   }
 
   convertQuizToQuizSubmission(quiz: Quiz): QuizSubmission {
