@@ -4,6 +4,7 @@ import { Quiz } from "./shared/quiz.model";
 import { Question } from "../question/shared/question.model";
 import { QuestionService } from "../question/shared/question.service";
 import { Observable } from "rxjs";
+import { QuizSubmission } from '../quiz-submission/shared/quizSubmission.model';
 
 @Component({
   selector: "app-quiz",
