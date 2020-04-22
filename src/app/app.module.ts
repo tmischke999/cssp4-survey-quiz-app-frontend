@@ -8,13 +8,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HomePageComponent } from './home-page/home-page.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { HeaderComponent } from './header/header.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QuestionComponent,
     HomePageComponent,
-    QuizComponent
+    QuizComponent,
+    HeaderComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,

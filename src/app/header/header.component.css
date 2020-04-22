@@ -1,0 +1,15 @@
+.navbar {
+  background: #0b77be;
+}
+
+.navbar-brand {
+  font-weight: 300;
+}
+
+.nav-item {
+  padding: 12px 20px;
+}
+
+.active {
+  border-bottom: 2px solid rgba(255,255,255,0.7);
+}

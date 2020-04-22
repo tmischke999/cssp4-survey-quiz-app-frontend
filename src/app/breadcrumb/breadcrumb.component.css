@@ -1,0 +1,13 @@
+.breadcrumb {
+  border-radius: 0;
+}
+
+.breadcrumb:hover {
+  cursor: pointer;
+}
+
+.breadcrumb-item.title {
+  color: #0b77be;
+  font-style: italic;
+  font-weight: 700;
+}

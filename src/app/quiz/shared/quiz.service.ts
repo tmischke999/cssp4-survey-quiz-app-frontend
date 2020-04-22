@@ -11,7 +11,6 @@ export class QuizService {
   private API = 'http://localhost:8080/quizApp/';
   private quizzes: Subject<Quiz[]> = new Subject();
   private quiz: Subject<Quiz> = new Subject();
-  private currentQuiz: Quiz;
 
   constructor(private http: HttpClient) { }
 
@@ -45,23 +44,19 @@ export class QuizService {
   }
 
   getQuizById(id: string): Observable<Quiz> {
+    console.log("Attempting to get quiz by id.");
     this.http.get<Quiz>(this.API + "quiz/" + id).subscribe(
       resp => {
         this.quiz.next(resp);
+        console.log("Response (id): " + resp.id);
+        console.log("Response (content): " + resp.content);
+        console.log("Response (no. of questions): " + resp.questions.length);
       },
       error => {
         console.log(error.statusText, error.status, error.message);
       }
     );
     return this.quiz;
-  }
-
-  setQuiz(quiz: Quiz) {
-    this.currentQuiz = quiz;
-  }
-
-  getCurrentQuiz(): Quiz {
-    return this.currentQuiz;
   }
 }
 

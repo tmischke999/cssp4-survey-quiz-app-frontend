@@ -1,0 +1,13 @@
+<nav class="border-bottom">
+  <ol class="breadcrumb mb-0">
+  <li class="breadcrumb-item title" routerLink="/">Quizzes &amp; Surveys</li>
+    <li
+      *ngFor="let breadcrumb of breadcrumbs"
+      routerLinkActive="active"
+      class="breadcrumb-item"
+      [routerLink]="breadcrumb.url"
+    >
+      {{breadcrumb.label}}
+    </li>
+  </ol>
+</nav>

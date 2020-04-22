@@ -1,6 +1,6 @@
-<form [formGroup]="questionForm" (ngSubmit)="submitQuestion()">
-  <div class="row">
-    <div class="col">
+<div class="row justify-content-center">
+  <div class="col-auto">
+    <form [formGroup]="questionForm" (ngSubmit)="submitQuestion()">
       <h2>Add Questions</h2>
       <label>Question Text:</label>
       <input type="text" formControlName="content" />
@@ -17,11 +17,16 @@
       </ol>
       <div class="row pt-3">
         <div class="col">
-          <button type="button" class="mr-2" (click)="addAnswers()">Add Answer</button>
-          <button type="submit">Add Question</button>
+          <button
+            type="button"
+            class="mr-2 btn btn-secondary"
+            (click)="addAnswers()"
+          >
+            Add Answer
+          </button>
+          <button type="submit" class="btn btn-primary">Add Question</button>
         </div>
       </div>
-    </div>
+    </form>
   </div>
-</form>
-
+</div>
