@@ -26,8 +26,4 @@ export class HomePageComponent implements OnInit {
       .getQuestions()
       .subscribe(questions => (this.questions = questions));
   }
-
-  quizSelect(quiz: Quiz) {
-    this.quizService.setQuiz(quiz);
-  }
 }
