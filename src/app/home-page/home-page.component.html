@@ -1,22 +1,27 @@
-<div class="row">
-  <div class="col">
-    <h4>Select quiz to add questions:</h4>
-    <ul *ngIf="quizzes" class="list-unstyled">
-      <li *ngFor="let quiz of quizzes">
-        <div class="card shadow-sm mb-3">
-          <div class="card-body">
-            <h4 class="d-inline-block">{{ quiz.content }}</h4>
-            <a role="button" class="btn btn-primary float-right" [routerLink]="['/quiz', quiz.id]"
-            (click)="quizSelect(quiz)">
+<div>
+  <div class="row">
+    <div *ngFor="let quiz of quizzes" class="col-sm-4 col-xl-3">
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h4 class="d-inline-block">{{ quiz.content }}</h4>
+        </div>
+        <div class="card-footer">
+          <a
+            role="button"
+            class="btn btn-primary float-right"
+            [routerLink]="['quizzes/quiz', quiz.id, quiz.content]"
+          >
             View/Edit Quiz
           </a>
-          <a role="button" class="btn btn-primary float-right mr-2" [routerLink]="['/take-quiz', quiz.id]"
-            (click)="quizSelect(quiz)">
+          <a
+            role="button"
+            class="btn btn-primary float-right mr-2"
+            [routerLink]="['quizzes/take-quiz', quiz.id, quiz.content]"
+          >
             Take Quiz
           </a>
-          </div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </div>

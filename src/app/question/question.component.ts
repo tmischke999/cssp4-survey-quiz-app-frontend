@@ -4,20 +4,24 @@ import { QuestionService } from "./shared/question.service";
 import { FormBuilder, FormGroup, FormArray, FormControl } from "@angular/forms";
 import { Quiz } from "../quiz/shared/quiz.model";
 import { QuizService } from "../quiz/shared/quiz.service";
+import { ActivatedRoute, ParamMap } from "@angular/router";
+import { switchMap } from "rxjs/operators";
 
 @Component({
   selector: "app-question",
   templateUrl: "./question.component.html",
-  styleUrls: ["./question.component.css"]
+  styleUrls: ["./question.component.css"],
 })
 export class QuestionComponent implements OnInit {
   question: Question = new Question();
   questions: Question[];
   questionForm: FormGroup;
   quiz: Quiz;
+  quiz$: Observable<Quiz>;
   questionQuizzes: Quiz[];
 
   constructor(
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     private questionService: QuestionService,
     private quizService: QuizService
@@ -25,7 +29,7 @@ export class QuestionComponent implements OnInit {
     this.questionForm = this.fb.group({
       content: "",
       answers: this.fb.array([]),
-      quizzes: this.fb.array([])
+      quizzes: this.fb.array([]),
     });
   }
 
@@ -44,7 +48,7 @@ export class QuestionComponent implements OnInit {
   newAnswer(): FormGroup {
     return this.fb.group({
       content: "",
-      isCorrect: false
+      isCorrect: false,
     });
   }
 
@@ -60,7 +64,7 @@ export class QuestionComponent implements OnInit {
     this.question.quizzes = this.questionForm.value.quizzes;
     console.log(this.question.quizzes);
 
-    this.questionService.addQuestion(this.question).subscribe(response => {
+    this.questionService.addQuestion(this.question).subscribe((response) => {
       console.log("Question submitted! " + response);
     });
 
@@ -72,13 +76,18 @@ export class QuestionComponent implements OnInit {
     // this.bikeService.getBikes().subscribe(bikes => (this.bikes = bikes));
     this.questionService
       .getQuestions()
-      .subscribe(questions => (this.questions = questions));
-    this.quiz = this.quizService.getCurrentQuiz();
+      .subscribe((questions) => (this.questions = questions));
+    this.quiz$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) =>
+        this.quizService.getQuizById(params.get("id"))
+      )
+    );
+    this.quiz$.subscribe((quiz) => (this.quiz = quiz));
     this.quizzes.push(
       this.fb.group({
         id: this.quiz.id,
         content: this.quiz.content,
-        questions: this.quiz.questions
+        questions: this.quiz.questions,
       })
     );
   }

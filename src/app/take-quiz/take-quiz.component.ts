@@ -8,7 +8,9 @@ import { QuizSubmission } from "../quiz-submission/shared/quizSubmission.model";
 import { QuestionSubmission } from "../question-submission/shared/questionSubmission.model";
 import { QuizSubmissionService } from "../quiz-submission/shared/quiz-submission.service";
 import { AnswerSubmission } from "../question-submission/shared/answerSubmission.model";
-import { Answer } from "../question/shared/answer.model";
+import { Observable } from "rxjs";
+import { ActivatedRoute, ParamMap } from "@angular/router";
+import { switchMap } from "rxjs/operators";
 
 @Component({
   selector: "app-take-quiz",
@@ -18,19 +20,21 @@ import { Answer } from "../question/shared/answer.model";
 export class TakeQuizComponent implements OnInit {
   quizzes: Quiz[];
   quiz: Quiz;
+  quiz$: Observable<Quiz>;
   // questions: Question[];
   // questionSubmissions: QuestionSubmission[];
   quizSubmissionForm: FormGroup;
   quizSubmission: QuizSubmission;
 
   constructor(
+    private route: ActivatedRoute,
     private quizSubmissionService: QuizSubmissionService,
     private quizService: QuizService,
     private questionService: QuestionService,
     private fb: FormBuilder
   ) {
     this.quizSubmission = this.convertQuizToQuizSubmission(
-      this.quizService.getCurrentQuiz()
+      this.quiz
     );
 
     console.log("******** the plan is to loop like this:");
@@ -102,10 +106,10 @@ export class TakeQuizComponent implements OnInit {
   }
 
   submitQuizSubmission() {
-    console.log(this.quizService.getCurrentQuiz().content);
+    console.log(this.quiz.content);
     console.log(this.quizSubmissionForm.value.questionSubmissions);
 
-    this.quizSubmission.content = this.quizService.getCurrentQuiz().content;
+    this.quizSubmission.content = this.quiz.content;
 
     console.log(this.quizSubmission.content);
     this.quizSubmission.questionSubmissions = this.quizSubmissionForm.value.questionSubmissions;
@@ -127,6 +131,11 @@ export class TakeQuizComponent implements OnInit {
     // this.questionService
     //   .getQuestions()
     //   .subscribe((questions) => (this.questions = questions));
-    this.quiz = this.quizService.getCurrentQuiz();
+    this.quiz$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) =>
+        this.quizService.getQuizById(params.get("id"))
+      )
+    );
+    this.quiz$.subscribe((quiz) => (this.quiz = quiz));
   }
 }

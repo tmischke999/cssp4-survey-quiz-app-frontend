@@ -10,8 +10,12 @@ input[type="text"] {
   height: 32px;
 }
 
+input[type="text"]:focus {
+  border-color: #0b77be;
+}
+
 h2 {
-  color: darkcyan;
+  color: #0b77be;
   font-size: 22px;
   font-weight: bold;
 }

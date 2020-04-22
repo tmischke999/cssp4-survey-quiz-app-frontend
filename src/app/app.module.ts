@@ -12,6 +12,8 @@ import { TakeQuizComponent } from './take-quiz/take-quiz.component';
 import { QuizSubmissionComponent } from './quiz-submission/quiz-submission.component';
 import { QuestionSubmissionComponent } from './question-submission/question-submission.component';
 import { AnswerSubmissionComponent } from './answer-submission/answer-submission.component';
+import { HeaderComponent } from './header/header.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { AnswerSubmissionComponent } from './answer-submission/answer-submission
     TakeQuizComponent,
     QuizSubmissionComponent,
     QuestionSubmissionComponent,
-    AnswerSubmissionComponent
+    AnswerSubmissionComponent,
+    HeaderComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,
