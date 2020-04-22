@@ -1,10 +1,37 @@
-<h3>{{quiz.content}}</h3>
-
 <app-question></app-question>
 
 <hr class="my-5" />
-<div *ngFor="let question of quiz.questions">
-  {{question.content}}
-  <br />
-  <ul *ngFor="let answer of question.answers">{{answer.content}} - {{answer.isCorrect}}</ul>
+
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-11 col-xl-9">
+    <table class="table table-hover table-bordered">
+      
+      <thead class="bg-light">
+        <tr>
+          <td>Question</td>
+          <td colspan="99">Answers <span class="small text-muted font-italic">valid answers marked with <i class="fas fa-check text-success"></i></span></td>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr *ngFor="let question of quiz.questions">
+          <td>
+  
+            {{ question.content }}
+          </td>
+          
+          <td *ngFor="let answer of question.answers">
+            {{
+              answer.content
+            }}
+            <span *ngIf="answer.isCorrect">
+              <i class="fas fa-check text-success"></i>
+            </span>
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+  </div>
 </div>
