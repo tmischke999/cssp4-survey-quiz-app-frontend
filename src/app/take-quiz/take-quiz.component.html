@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
   <div class="col-auto">
-    <form [formGroup]="quizSubmissionForm" (ngSubmit)="submitQuizSubmission()">
+    <form [formGroup]="quizSubmissionForm" (ngSubmit)="submitQuizSubmission()" *ngIf="!quizSubmitted">
       <h4>
         {{ quizSubmission.content }}
       </h4>
@@ -8,8 +8,27 @@
       <ol formArrayName="questions">
         <li *ngFor="let question of questions.controls; let i = index">
           <div [formGroupName]="i">
-            <!-- <input type="checkbox" formControlName="isSelected" />&nbsp; -->
-            <label><input type="text" readonly formControlName="content" class="question-content" /></label>&nbsp;
+            <input
+              type="text"
+              readonly
+              formControlName="content"
+              class="readonly"
+            />
+            <ul formArrayName="answers" class="list-unstyled">
+              <li *ngFor="let answer of question.get('answers').controls; let i = index">
+                <div [formGroupName]="i">
+                  <input type="checkbox" formControlName="isSelected" />&nbsp;
+                  <label>
+                    <input
+                      type="text"
+                      readonly
+                      formControlName="content"
+                      class="readonly"
+                    />
+                  </label>
+                </div>
+              </li>
+            </ul>
           </div>
         </li>
       </ol>
@@ -19,5 +38,11 @@
         </div>
       </div>
     </form>
+    <div *ngIf="quizSubmitted">
+      <h2 class="text-center text-success">
+        <i class="fas fa-check mr-2"></i>Quiz submitted!
+      </h2>
+      <button class="btn btn-primary" routerLink="/">Return to Dashboard</button>
+    </div>
   </div>
 </div>

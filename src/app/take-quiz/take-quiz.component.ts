@@ -21,6 +21,7 @@ export class TakeQuizComponent implements OnInit {
   quiz$: Observable<Quiz>;
   quizSubmission: QuizSubmission;
   quizSubmissionForm: FormGroup;
+  quizSubmitted: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,14 +46,14 @@ export class TakeQuizComponent implements OnInit {
   submitQuizSubmission() {
     console.log("Attempting to submit Quiz Submission.");
 
-    this.quizSubmission.questionSubmissions = this.quizSubmissionForm.value.questionSubmissions;
+    this.quizSubmission.questionSubmissions = this.quizSubmissionForm.value.questions;
     this.quizSubmissionService
       .addQuizSubmission(this.quizSubmission)
       .subscribe((response) => {
         console.log("Quiz submitted! " + response);
       });
-
-    this.quizSubmissionForm.reset();
+      
+      this.quizSubmitted = true;
   }
 
   convertQuizToQuizSubmission(quiz: Quiz): QuizSubmission {
@@ -85,8 +86,26 @@ export class TakeQuizComponent implements OnInit {
 
     quiz.questionSubmissions.forEach((question) => {
       console.log("Expected question content: " + question.content);
-      this.questions.push(this.fb.group({ content: question.content }));
+      this.questions.push(
+        this.fb.group({ 
+          content: question.content,
+          answers: this.setAnswers(question)
+        })
+       );
     });
+  }
+
+  setAnswers(questionSub: QuestionSubmission) {
+    let arr = new FormArray([])
+    questionSub.answers.forEach(answer => {
+      arr.push(this.fb.group({ 
+        content: answer.content,
+        isCorrect: answer.isCorrect,
+        isSelected: false
+      }))
+    })
+    return arr;
+
   }
 
   ngOnInit() {
