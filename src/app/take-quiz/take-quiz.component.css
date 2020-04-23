@@ -1,0 +1,9 @@
+input.question-content {
+  border: none;
+  cursor: default;
+}
+
+input.question-content:focus {
+  border: none;
+  box-shadow: none;
+}

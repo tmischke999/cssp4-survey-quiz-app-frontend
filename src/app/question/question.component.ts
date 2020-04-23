@@ -6,6 +6,7 @@ import { Quiz } from "../quiz/shared/quiz.model";
 import { QuizService } from "../quiz/shared/quiz.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { switchMap } from "rxjs/operators";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-question",

@@ -18,61 +18,20 @@ import { switchMap } from "rxjs/operators";
   styleUrls: ["./take-quiz.component.css"],
 })
 export class TakeQuizComponent implements OnInit {
-  quizzes: Quiz[];
-  quiz: Quiz;
   quiz$: Observable<Quiz>;
-  // questions: Question[];
-  // questionSubmissions: QuestionSubmission[];
-  quizSubmissionForm: FormGroup;
   quizSubmission: QuizSubmission;
+  quizSubmissionForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
-    private quizSubmissionService: QuizSubmissionService,
     private quizService: QuizService,
-    private questionService: QuestionService,
+    private quizSubmissionService: QuizSubmissionService,
     private fb: FormBuilder
   ) {
-    this.quizSubmission = this.convertQuizToQuizSubmission(
-      this.quiz
-    );
-
-    console.log("******** the plan is to loop like this:");
-    console.log("For quiz: " + this.quizSubmission.content);
-
-    this.quizSubmission.questionSubmissions.forEach((question) => {
-      console.log(question.content);
-      question.answers.forEach((answer) => {
-        console.log(`\t${answer.content}`);
-      });
-    });
-
-    console.log("@@@@@ end of plan debuggin output");
-
     this.quizSubmissionForm = this.fb.group({
-      content: this.quizSubmission.content,
-      questions: this.fb.array([]),
+      content: "",
+      questions: this.fb.array([])
     });
-
-    this.quizSubmission.questionSubmissions.forEach((question) => {
-      console.log("Expected question content: " + question.content)
-      this.questions.push(this.fb.group({ content: question.content }));
-    });
-
-    /* ------------------------------------------------------
-
-    this.quizSubmissionForm = this.fb.group({
-      questionSubmissions: this.fb.array([
-        this.fb.group({
-          content: "",
-          answers: this.fb.array(
-            this.quizSubmission.questionSubmissions.map((q) => q.answers)
-          ),
-        }),
-      ]),
-    });
-    
-    --------------------------------------------------------*/
   }
 
   get answers(): FormArray {
@@ -83,7 +42,23 @@ export class TakeQuizComponent implements OnInit {
     return this.quizSubmissionForm.get("questions") as FormArray;
   }
 
+  submitQuizSubmission() {
+    console.log("Attempting to submit Quiz Submission.");
+
+    this.quizSubmission.questionSubmissions = this.quizSubmissionForm.value.questionSubmissions;
+    this.quizSubmissionService
+      .addQuizSubmission(this.quizSubmission)
+      .subscribe((response) => {
+        console.log("Quiz submitted! " + response);
+      });
+
+    this.quizSubmissionForm.reset();
+  }
+
   convertQuizToQuizSubmission(quiz: Quiz): QuizSubmission {
+    console.log("=======================================");
+    console.log("Running 'convertQuizToQuizSubmission(" + quiz.content + ")'"); // currently, "quiz" is coming back as undefineds
+    console.log("Quiz content: " + quiz.content);
     let quizSub: QuizSubmission = new QuizSubmission();
     quizSub.content = quiz.content;
     quizSub.questionSubmissions = quiz.questions.map((q) => {
@@ -105,37 +80,26 @@ export class TakeQuizComponent implements OnInit {
     return quizSub;
   }
 
-  submitQuizSubmission() {
-    console.log(this.quiz.content);
-    console.log(this.quizSubmissionForm.value.questionSubmissions);
+  addQuizToFormBuilder(quiz: QuizSubmission) {
+    this.quizSubmissionForm.value.content = quiz.content;
 
-    this.quizSubmission.content = this.quiz.content;
-
-    console.log(this.quizSubmission.content);
-    this.quizSubmission.questionSubmissions = this.quizSubmissionForm.value.questionSubmissions;
-    console.log(this.quizSubmission.questionSubmissions);
-
-    this.quizSubmissionService
-      .addQuizSubmission(this.quizSubmission)
-      .subscribe((response) => {
-        console.log("Quiz submitted! " + response);
-      });
-
-    this.quizSubmissionForm.reset();
+    quiz.questionSubmissions.forEach((question) => {
+      console.log("Expected question content: " + question.content);
+      this.questions.push(this.fb.group({ content: question.content }));
+    });
   }
 
   ngOnInit() {
-    this.quizService
-      .getQuizzes()
-      .subscribe((quizzes) => (this.quizzes = quizzes));
-    // this.questionService
-    //   .getQuestions()
-    //   .subscribe((questions) => (this.questions = questions));
     this.quiz$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
         this.quizService.getQuizById(params.get("id"))
       )
     );
-    this.quiz$.subscribe((quiz) => (this.quiz = quiz));
+    this.quiz$.subscribe(
+      (quiz) => {
+        this.quizSubmission = this.convertQuizToQuizSubmission(quiz);
+        this.addQuizToFormBuilder(this.quizSubmission);
+      }
+    );
   }
 }
