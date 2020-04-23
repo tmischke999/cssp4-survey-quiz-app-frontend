@@ -28,8 +28,13 @@ export class QuizService {
   }
 
   addQuiz(question: Quiz): Observable<Quiz> {
-    console.log("Attempting to add to database");
+    console.log('Attempting to add to database');
     return this.http.post<Quiz>(this.API + "addQuiz", question);
+  }
+
+  updateQuiz(quiz: Quiz): Observable<Quiz> {
+    console.log('Attempting to add to database');
+    return this.http.post<Quiz>(this.API + 'updateQuiz', quiz);
   }
 
   getQuiz(quiz: Quiz): Observable<Quiz> {

@@ -1,0 +1,58 @@
+
+
+<div *ngIf="!isEditing; else editBlock">
+  <button class="btn btn-primary" (click)="switchOperation()">Edit</button>
+  <div *ngFor="let question of quiz.questions">
+    {{question.content}}
+    <br />
+    <ul *ngFor="let answer of question.answers">{{answer.content}} -
+      <div *ngIf="answer.isCorrect; else elseBlock">Correct</div>
+      <ng-template #elseBlock>Wrong</ng-template>
+    </ul>
+  </div>
+</div>
+
+<ng-template #editBlock>
+
+  <form [formGroup]="quizForm" (ngSubmit)="updateQuiz()">
+    <div class="row">
+      <div class="col">
+        <h2>Quiz Editing</h2>
+
+
+        <label>Quiz Text:</label>
+        <input type="text" formControlName="content" />
+
+        <h5>Question:</h5>
+        <ol formArrayName="questions">
+          <li *ngFor="let question of questions.controls; let qIndex = index">
+            <div [formGroupName]="qIndex">
+              <label>Question Text:</label>&nbsp;&nbsp;
+              <input type="text" formControlName="content" />
+            </div>
+
+            <h5>Answers:</h5>
+            <ol formArrayName="answers">
+              <li *ngFor="let answer of question.get('answers').controls; let aIndex = index">
+                <div [formGroupName]="aIndex">
+                  <label>Valid answer?</label>&nbsp;
+                  <input type="checkbox" formControlName="isCorrect" />&nbsp;
+                  <input type="text" formControlName="content" />
+                </div>
+              </li>
+            </ol>
+
+          </li>
+
+        </ol>
+
+        <button class="btn btn-primary" type="submit">Update Quiz</button>
+        <button class="btn btn-danger" type="submit">Discard Changes</button>
+
+      </div>
+    </div>
+  </form>
+
+</ng-template>
+
+
